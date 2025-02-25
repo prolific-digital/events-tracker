@@ -228,28 +228,4 @@ $selected_end_date = isset($_GET['end_date']) ? sanitize_text_field($_GET['end_d
     </div>
     
     
-    <?php if (current_user_can('manage_options') && isset($event_data['debug_info'])): ?>
-        <div class="events-tracker-debug" style="margin-top: 30px; padding: 15px; background: #f8f8f8; border: 1px solid #ddd; font-family: monospace;">
-            <h3>Debug Information (Only visible to administrators)</h3>
-            <p>Current Blog ID: <?php echo get_current_blog_id(); ?></p>
-            <p>Source Blog ID: <?php echo $blog_id; ?></p>
-            <p>Successfully Switched: <?php echo $event_data['debug_info']['switched'] ? 'Yes' : 'No'; ?></p>
-            <p>tribe_events Post Type Found: <?php echo isset($event_data['debug_info']['tribe_events_exists']) && $event_data['debug_info']['tribe_events_exists'] ? 'Yes' : 'No'; ?></p>
-            <p>Events Found: <?php echo $event_data['debug_info']['found_posts']; ?></p>
-            
-            <?php if (!empty($event_data['debug_info']['error'])): ?>
-                <p style="color: red;">Error: <?php echo $event_data['debug_info']['error']; ?></p>
-            <?php endif; ?>
-            
-            <div>
-                <p><strong>Available Post Types:</strong></p>
-                <pre><?php if(isset($event_data['debug_info']['post_types_found'])) print_r($event_data['debug_info']['post_types_found']); else echo "No post types data available"; ?></pre>
-            </div>
-            
-            <div>
-                <p><strong>Query:</strong></p>
-                <pre><?php if (isset($event_data['debug_info']['sql'])) echo $event_data['debug_info']['sql']; ?></pre>
-            </div>
-        </div>
-    <?php endif; ?>
 </div>
