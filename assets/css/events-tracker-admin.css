@@ -1,0 +1,67 @@
+/**
+ * Admin styles for Events Tracker
+ */
+
+.events-tracker-dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+}
+
+.events-tracker-card {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    margin: 10px;
+    min-width: 300px;
+    flex-basis: calc(50% - 20px);
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.events-tracker-card h2,
+.events-tracker-card h3,
+.events-tracker-card h4 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.events-tracker-shortcodes-info .events-tracker-card {
+    flex-basis: 100%;
+    margin-bottom: 20px;
+}
+
+.events-tracker-admin-help {
+    margin-top: 30px;
+}
+
+.events-tracker-admin-help .events-tracker-card {
+    flex-basis: 100%;
+    margin-bottom: 15px;
+}
+
+.form-table th {
+    width: 120px;
+}
+
+code {
+    background: #f6f6f6;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 13px;
+}
+
+pre {
+    background: #f6f6f6;
+    padding: 10px;
+    border-radius: 3px;
+    overflow: auto;
+    white-space: pre-wrap;
+}
+
+@media screen and (max-width: 782px) {
+    .events-tracker-card {
+        flex-basis: 100%;
+    }
+}

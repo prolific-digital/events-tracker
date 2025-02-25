@@ -1,0 +1,238 @@
+/**
+ * Public styles for Events Tracker (integrated with The Events Calendar)
+ */
+
+/* Container */
+.events-tracker-upcoming-events,
+.events-tracker-saved-events {
+    margin-bottom: 30px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.events-tracker-saved-events h3 {
+    margin-bottom: 20px;
+}
+
+/* Tables */
+.events-tracker-events-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border: 1px solid #e5e5e5;
+}
+
+.events-tracker-events-table th,
+.events-tracker-events-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e5e5;
+    vertical-align: top;
+}
+
+.events-tracker-events-table th {
+    font-weight: bold;
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 14px;
+}
+
+.events-tracker-events-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Event Title */
+.events-tracker-event-title {
+    font-weight: 600;
+}
+
+.events-tracker-event-title a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.events-tracker-event-title a:hover {
+    color: #00a0d2;
+    text-decoration: underline;
+}
+
+.events-tracker-event-cost {
+    margin-top: 5px;
+    font-size: 13px;
+    color: #666;
+}
+
+/* Venue and Date */
+.events-tracker-event-date,
+.events-tracker-event-venue {
+    color: #555;
+    font-size: 14px;
+}
+
+/* Buttons */
+.events-tracker-save-event,
+.events-tracker-remove-event {
+    display: inline-block;
+    background-color: #2271b1;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+
+.events-tracker-remove-event {
+    background-color: #cc1818;
+}
+
+.events-tracker-save-event:hover {
+    background-color: #135e96;
+}
+
+.events-tracker-remove-event:hover {
+    background-color: #a00;
+}
+
+/* Status message */
+.events-tracker-event-status {
+    display: inline-block;
+    margin-left: 10px;
+    font-style: italic;
+    font-size: 13px;
+    color: #555;
+}
+
+/* Pagination */
+.events-tracker-pagination {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.events-tracker-pagination .page-numbers {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 2px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #0073aa;
+    background-color: #fff;
+}
+
+.events-tracker-pagination .page-numbers.current {
+    background-color: #0073aa;
+    color: #fff;
+    border-color: #0073aa;
+}
+
+.events-tracker-pagination .page-numbers:hover {
+    background-color: #f9f9f9;
+}
+
+/* View all link */
+.events-tracker-view-all {
+    margin-top: 20px;
+}
+
+.events-tracker-view-all .button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #2271b1;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+}
+
+.events-tracker-view-all .button:hover {
+    background-color: #135e96;
+}
+
+/* No events & notices messages */
+.events-tracker-no-events,
+.events-tracker-notice {
+    background-color: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.events-tracker-no-events p,
+.events-tracker-notice p {
+    margin: 0 0 15px 0;
+}
+
+/* Error notice for admins */
+.events-tracker-notice.events-tracker-error {
+    background-color: #fef1f1;
+    border-color: #e5c2c2;
+    color: #a94442;
+}
+
+/* Powered by section */
+.events-tracker-powered-by {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #777;
+}
+
+.events-tracker-powered-by a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.events-tracker-powered-by a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Tables */
+@media screen and (max-width: 767px) {
+    .events-tracker-events-table,
+    .events-tracker-events-table thead,
+    .events-tracker-events-table tbody,
+    .events-tracker-events-table th,
+    .events-tracker-events-table td,
+    .events-tracker-events-table tr {
+        display: block;
+    }
+    
+    .events-tracker-events-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    .events-tracker-events-table tr {
+        border: 1px solid #e5e5e5;
+        margin-bottom: 15px;
+    }
+    
+    .events-tracker-events-table td {
+        border: none;
+        border-bottom: 1px solid #e5e5e5;
+        position: relative;
+        padding-left: 40%;
+        min-height: 30px;
+    }
+    
+    .events-tracker-events-table td:before {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        width: 35%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+    }
+    
+    .events-tracker-events-table td:nth-of-type(1):before { content: "Event"; }
+    .events-tracker-events-table td:nth-of-type(2):before { content: "Date & Time"; }
+    .events-tracker-events-table td:nth-of-type(3):before { content: "Venue"; }
+    .events-tracker-events-table td:nth-of-type(4):before { content: "Actions"; }
+}
