@@ -50,9 +50,19 @@ class Events_Tracker_Shortcodes {
         );
         
         // Process filters from GET parameters (if any)
-        $category_filter = isset($_GET['tribe_eventcategory']) ? sanitize_text_field($_GET['tribe_eventcategory']) : $atts['category'];
-        $start_date_filter = isset($_GET['start_date']) ? sanitize_text_field($_GET['start_date']) : $atts['start_date'];
-        $end_date_filter = isset($_GET['end_date']) ? sanitize_text_field($_GET['end_date']) : $atts['end_date'];
+        $category_filter = $atts['category'];
+        $start_date_filter = $atts['start_date'];
+        $end_date_filter = $atts['end_date'];
+        
+        // If form was submitted, verify nonce and process filters
+        if (isset($_GET['events_tracker_filter_nonce'])) {
+            // Verify nonce
+            if (wp_verify_nonce($_GET['events_tracker_filter_nonce'], 'events_tracker_filter')) {
+                $category_filter = isset($_GET['tribe_eventcategory']) ? sanitize_text_field($_GET['tribe_eventcategory']) : $atts['category'];
+                $start_date_filter = isset($_GET['start_date']) ? sanitize_text_field($_GET['start_date']) : $atts['start_date'];
+                $end_date_filter = isset($_GET['end_date']) ? sanitize_text_field($_GET['end_date']) : $atts['end_date'];
+            }
+        }
 
         // Only show to logged in users
         if (!is_user_logged_in()) {

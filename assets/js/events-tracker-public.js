@@ -109,15 +109,20 @@
                 if (response.success) {
                     // Check if we're on the saved events page
                     if ($button.closest('.events-tracker-saved-events').length) {
-                        // If on the saved events page, remove the row
-                        $button.closest('tr').fadeOut(300, function() {
-                            $(this).remove();
-                            
-                            // If no events left, reload the page
-                            if ($('.events-tracker-saved-events tr').length <= 1) {
-                                location.reload();
-                            }
-                        });
+                        // If on the saved events page, remove the card with animation
+                        var $card = $button.closest('.events-tracker-event-card');
+                        $card.css('opacity', '0.5');
+                        
+                        setTimeout(function() {
+                            $card.slideUp(300, function() {
+                                $(this).remove();
+                                
+                                // If no events left, reload the page
+                                if ($('.events-tracker-saved-events .events-tracker-event-card').length === 0) {
+                                    location.reload();
+                                }
+                            });
+                        }, 300);
                     } else {
                         // If on the upcoming events page, update the button
                         $button.removeClass('events-tracker-remove-event').addClass('events-tracker-save-event');

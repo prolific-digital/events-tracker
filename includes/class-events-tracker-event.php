@@ -116,7 +116,10 @@ class Events_Tracker_Event {
             $debug_info['method_used'] = 'direct_db_query';
             
             try {
-                // Switch to target blog to get the correct table prefix
+                // Get information needed to construct the queries
+                $debug_info['blog_id'] = $blog_id;
+                
+                // First, switch to the blog to get information we need
                 $switched = $multisite->switch_to_blog($blog_id);
                 $debug_info['switched'] = $switched;
                 
@@ -129,9 +132,12 @@ class Events_Tracker_Event {
                 $debug_info['post_types_found'] = $post_types;
                 $debug_info['tribe_events_exists'] = isset($post_types['tribe_events']);
                 
-                // Get the current blog's table prefix
+                // Get the blog's table prefix
                 $blog_prefix = $wpdb->get_blog_prefix($blog_id);
                 $debug_info['blog_prefix'] = $blog_prefix;
+                
+                // Restore to original blog - we have all the info we need now
+                $multisite->restore_current_blog();
                 
                 // Tables we'll need
                 $posts_table = $blog_prefix . 'posts';
@@ -171,9 +177,6 @@ class Events_Tracker_Event {
                 $joins_sql = implode(' ', $joins);
                 $wheres_sql = 'WHERE ' . implode(' AND ', $wheres);
                 
-                // Restore to original blog before running queries
-                $multisite->restore_current_blog();
-                
                 // Query to get total posts count
                 $count_query = "SELECT COUNT(DISTINCT p.ID) 
                                 FROM {$posts_table} p 
@@ -209,7 +212,9 @@ class Events_Tracker_Event {
                     }
                 }
             } catch (Exception $e) {
-                $debug_info['error'] = $e->getMessage();
+                $error_message = $e->getMessage();
+                $debug_info['error'] = $error_message;
+                error_log('Events Tracker - Database Error: ' . $error_message);
             }
         }
         
@@ -280,7 +285,8 @@ class Events_Tracker_Event {
                     $event = new WP_Post($post_data);
                 }
             } catch (Exception $e) {
-                // Log error if needed
+                $error_message = $e->getMessage();
+                error_log('Events Tracker - Error retrieving event: ' . $error_message);
                 $event = null;
             }
         }
@@ -452,7 +458,9 @@ class Events_Tracker_Event {
                     }
                 }
             } catch (Exception $e) {
-                $details['debug_info']['error'] = $e->getMessage();
+                $error_message = $e->getMessage();
+                $details['debug_info']['error'] = $error_message;
+                error_log('Events Tracker - Error getting event details: ' . $error_message);
             }
         }
         
@@ -716,7 +724,8 @@ class Events_Tracker_Event {
                 
                 $categories = $wpdb->get_results($query);
             } catch (Exception $e) {
-                // Log error if needed
+                $error_message = $e->getMessage();
+                error_log('Events Tracker - Error getting event categories: ' . $error_message);
                 $categories = array();
             }
         }

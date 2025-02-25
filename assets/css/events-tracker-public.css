@@ -2,6 +2,155 @@
  * Public styles for Events Tracker (integrated with The Events Calendar)
  */
 
+/* Filter Form */
+.events-tracker-filter-form {
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+}
+.events-tracker-filter-form .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+.events-tracker-filter-form .filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+.events-tracker-filter-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.events-tracker-filter-form select,
+.events-tracker-filter-form input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.events-tracker-filter-form .filter-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.events-tracker-filter-form button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.events-tracker-filter-form .apply-filter {
+    background: #0073aa;
+    color: white;
+}
+.events-tracker-filter-form .reset-filter {
+    background: #f0f0f0;
+    color: #333;
+}
+
+/* Card Layout */
+.events-tracker-card-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.events-tracker-event-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: white;
+}
+.events-tracker-event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.events-tracker-event-card-header {
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.events-tracker-event-card-title {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+.events-tracker-event-card-title a {
+    color: #0073aa;
+    text-decoration: none;
+}
+.events-tracker-event-card-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+.events-tracker-event-category {
+    font-size: 12px;
+    padding: 3px 8px;
+    background: #f0f0f0;
+    border-radius: 12px;
+    color: #666;
+}
+.events-tracker-event-card-body {
+    padding: 15px;
+}
+.events-tracker-event-info {
+    margin-bottom: 10px;
+}
+.events-tracker-event-info-label {
+    font-weight: bold;
+    color: #555;
+    margin-right: 5px;
+}
+.events-tracker-event-card-footer {
+    padding: 15px;
+    border-top: 1px solid #f0f0f0;
+    background: #f9f9f9;
+    text-align: right;
+}
+.events-tracker-save-event,
+.events-tracker-remove-event {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #0073aa;
+    color: white;
+    font-size: 14px;
+}
+.events-tracker-remove-event {
+    background: #aa0000;
+}
+.events-tracker-event-cost {
+    display: inline-block;
+    margin-left: 10px;
+    padding: 3px 8px;
+    background: #f8f8f8;
+    border-radius: 4px;
+    color: #666;
+    font-size: 14px;
+}
+.events-tracker-saved-events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.events-tracker-view-all .button {
+    padding: 8px 15px;
+    background: #0073aa;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    display: inline-block;
+}
+
 /* Container */
 .events-tracker-upcoming-events,
 .events-tracker-saved-events {
