@@ -61,6 +61,13 @@ if (!$event) {
 $GLOBALS['post'] = $event;
 setup_postdata($event);
 
+// Check if this event is already saved by the user
+$is_saved = false;
+if (is_user_logged_in()) {
+    $saved_event_ids = Events_Tracker_Event::get_saved_events();
+    $is_saved = in_array($event->ID, $saved_event_ids);
+}
+
 // Get header
 get_header();
 ?>
@@ -91,11 +98,20 @@ get_header();
                 </div>
                 <?php endif; ?>
                 
+                <?php if (is_user_logged_in()) : ?>
                 <div class="event-actions">
-                    <a href="#" class="event-action-button event-save-button" data-event-id="<?php echo esc_attr($event->ID); ?>">
+                    <?php if ($is_saved) : ?>
+                    <button class="events-tracker-remove-event" data-event-id="<?php echo esc_attr($event->ID); ?>">
+                        <?php _e('Remove from My List', 'events-tracker'); ?>
+                    </button>
+                    <?php else : ?>
+                    <button class="events-tracker-save-event" data-event-id="<?php echo esc_attr($event->ID); ?>">
                         <?php _e('Add to My List', 'events-tracker'); ?>
-                    </a>
+                    </button>
+                    <?php endif; ?>
+                    <span class="events-tracker-event-status"></span>
                 </div>
+                <?php endif; ?>
             </div>
         </header>
 
