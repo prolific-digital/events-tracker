@@ -13,9 +13,10 @@ Events Tracker is an add-on for The Events Calendar plugin, designed for WordPre
 - AJAX-based saving/removing of events (no page reload)
 - Admin settings to configure which site to pull events from
 - Shortcodes for easy implementation on any page
-- Fully responsive design
+- Fully responsive design with customizable template structure
 - Displays event details including date, time, venue, and cost
 - Works across multisite networks without requiring The Events Calendar on the current site
+- Individual event pages with clean, developer-friendly markup
 
 ## Shortcodes
 
@@ -25,7 +26,10 @@ Events Tracker is an add-on for The Events Calendar plugin, designed for WordPre
 [events_tracker_upcoming per_page="10"]
 ```
 
-Displays a paginated list of upcoming events with "Add to My List" buttons. Only logged-in users can see this content.
+Displays a paginated list of upcoming events with "Add to My List" buttons. Only logged-in users can see the save functionality, but anyone can view the event listings.
+
+Parameters:
+- `per_page`: Number of events to display per page (default: 10)
 
 ### Saved Events
 
@@ -35,12 +39,29 @@ Displays a paginated list of upcoming events with "Add to My List" buttons. Only
 
 Displays a list of events that the current user has saved to their personal list. Only logged-in users can see this content.
 
+## Single Event Pages
+
+The plugin creates a custom rewrite rule for single event pages, allowing visitors to view detailed information about a specific event. These pages are accessed at:
+
+```
+/tracked-event/{event_id}/
+```
+
+Single event pages include:
+- Event title and details
+- Date and time information
+- Venue and location details
+- Event cost (if available)
+- "Add to My List" functionality for logged-in users
+- Full event content rendered from blocks
+
 ## Installation
 
 1. Upload the `events-tracker` folder to the `/wp-content/plugins/` directory
 2. Activate the Events Tracker plugin through the 'Plugins' menu in WordPress
 3. Configure the plugin settings under 'Events Tracker' in the admin menu
 4. Add the shortcodes to any page where you want to display events
+5. Set up any pages that will use the single event template
 
 ## Configuration
 
@@ -49,7 +70,8 @@ Displays a list of events that the current user has saved to their personal list
 3. Make sure The Events Calendar is installed and active on the source site
 4. Set the "Events Per Page" to control pagination
 5. Choose whether to display past events in the saved events list
-6. Save your settings
+6. Select a page to use for the events list display
+7. Save your settings
 
 ## Requirements
 
@@ -64,6 +86,7 @@ Displays a list of events that the current user has saved to their personal list
 2. Users can browse upcoming events and save them to their personal list
 3. Saved events are stored in user meta data for easy retrieval
 4. All interaction happens via AJAX for a smooth user experience
+5. Single event pages use direct database queries to bypass blog switching limitations
 
 ## Multisite Usage Scenarios
 
@@ -81,6 +104,8 @@ This plugin supports several multisite usage patterns:
 - The plugin uses direct database queries for reliable cross-site data retrieval
 - User saved events are stored in the `events_tracker_saved_events` user meta field as an array of event IDs
 - The plugin includes security measures like nonce verification and capability checks
+- Template files use semantic class names for easy CSS customization
+- Single event pages display content using WordPress block rendering functions
 
 ## The Events Calendar Integration
 
@@ -90,6 +115,7 @@ The plugin integrates with The Events Calendar by:
 - Reading event details from meta fields (_EventStartDate, _EventEndDate, etc.)
 - Reading venue details from venue posts
 - Displaying events similarly to The Events Calendar's own views
+- Supporting The Events Calendar's categories for filtering events
 
 ## License
 
@@ -98,6 +124,14 @@ This plugin is licensed under the GPL v2 or later.
 ---
 
 **Note:** This plugin requires The Events Calendar to be installed and activated on the source site (the site from which events are being pulled). The Events Calendar is NOT required on the site where Events Tracker is installed if it's pulling events from another site in the network.
+
+## Customization
+
+The plugin templates are designed to be easily customizable:
+
+1. **CSS Styling**: All templates use semantic class names that can be targeted with your theme's CSS
+2. **Template Override**: Copy template files from the plugin's `public/partials` directory to your theme's `events-tracker` directory to override them
+3. **Filter Hooks**: Use WordPress filter hooks to modify data before it's displayed
 
 ## Created By
 
