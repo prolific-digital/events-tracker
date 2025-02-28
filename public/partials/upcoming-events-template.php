@@ -178,7 +178,7 @@ $selected_end_date = isset($_GET['end_date']) ? sanitize_text_field($_GET['end_d
                 <div class="events-tracker-event-card-body">
                     <div class="events-tracker-event-info">
                         <span class="events-tracker-event-info-label"><?php _e('Date:', 'events-tracker'); ?></span>
-                        <span class="events-tracker-event-date"><?php echo esc_html($formatted_date); ?></span>
+                        <span class="events-tracker-event-date"><?php echo wp_kses_post($formatted_date); ?></span>
                     </div>
                     
                     <?php if (!empty(trim($formatted_venue))) : ?>

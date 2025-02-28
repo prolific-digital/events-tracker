@@ -25,7 +25,7 @@ class Events_Tracker_Activator {
             update_option( 'events_tracker_events_per_page', 10 );
         }
         
-        // Flush rewrite rules to ensure our shortcodes work
-        flush_rewrite_rules();
+        // Set a flag to flush rewrite rules when the plugin loads
+        update_option('events_tracker_flush_rewrite_rules', true);
     }
 }

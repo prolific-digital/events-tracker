@@ -46,6 +46,17 @@ class Events_Tracker_Settings {
                 'default' => false,
             )
         );
+        
+        register_setting(
+            'events_tracker_settings',
+            'events_tracker_events_page',
+            array(
+                'type' => 'integer',
+                'description' => 'The page ID where events are displayed',
+                'sanitize_callback' => 'absint',
+                'default' => 0,
+            )
+        );
 
         // Add general settings section
         add_settings_section(
@@ -76,6 +87,14 @@ class Events_Tracker_Settings {
             'events_tracker_display_past_events',
             __('Past Events', 'events-tracker'),
             array($this, 'display_past_events_callback'),
+            'events-tracker-settings',
+            'events_tracker_settings_section'
+        );
+        
+        add_settings_field(
+            'events_tracker_events_page',
+            __('Events Page', 'events-tracker'),
+            array($this, 'events_page_callback'),
             'events-tracker-settings',
             'events_tracker_settings_section'
         );
@@ -182,6 +201,34 @@ class Events_Tracker_Settings {
         
         echo '<input type="checkbox" name="events_tracker_display_past_events" value="1" ' . checked(1, $display_past, false) . ' />';
         echo '<p class="description">' . __('Show past events in the saved events list. If unchecked, only upcoming events will be displayed.', 'events-tracker') . '</p>';
+    }
+    
+    /**
+     * Events page field callback
+     *
+     * @since    1.0.0
+     */
+    public function events_page_callback() {
+        $page_id = get_option('events_tracker_events_page', 0);
+        
+        // Get all pages
+        $pages = get_pages();
+        
+        echo '<select name="events_tracker_events_page" class="regular-text">';
+        echo '<option value="0">' . __('-- Select a Page --', 'events-tracker') . '</option>';
+        
+        foreach ($pages as $page) {
+            echo '<option value="' . esc_attr($page->ID) . '" ' . selected($page_id, $page->ID, false) . '>' . esc_html($page->post_title) . '</option>';
+        }
+        
+        echo '</select>';
+        
+        echo '<p class="description">' . __('Select the page where you have added the events shortcodes. This page will be used for back links from single event views.', 'events-tracker') . '</p>';
+        
+        if ($page_id > 0) {
+            $page_url = get_permalink($page_id);
+            echo '<p><a href="' . esc_url($page_url) . '" target="_blank">' . __('View Events Page', 'events-tracker') . '</a></p>';
+        }
     }
     
     /**
