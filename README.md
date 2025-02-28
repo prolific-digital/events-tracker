@@ -23,21 +23,40 @@ Events Tracker is an add-on for The Events Calendar plugin, designed for WordPre
 ### Upcoming Events
 
 ```
-[events_tracker_upcoming per_page="10"]
+[events_tracker_upcoming per_page="10" category="featured" start_date="2025-03-01" end_date="2025-12-31"]
 ```
 
 Displays a paginated list of upcoming events with "Add to My List" buttons. Only logged-in users can see the save functionality, but anyone can view the event listings.
 
 Parameters:
 - `per_page`: Number of events to display per page (default: 10)
+- `category`: Filter events by category slug (default: show all categories)
+- `start_date`: Start date for events to display in YYYY-MM-DD format (default: current date)
+- `end_date`: End date for events to display in YYYY-MM-DD format (default: no end date limit)
+- `tag`: Filter events by tag slug (default: show all tags)
 
 ### Saved Events
 
 ```
-[events_tracker_saved]
+[events_tracker_saved per_page="10"]
 ```
 
 Displays a list of events that the current user has saved to their personal list. Only logged-in users can see this content.
+
+Parameters:
+- `per_page`: Number of events to display per page (default: 10)
+
+### Combined Usage
+
+You can combine shortcodes on a single page to create a complete event management interface:
+
+```
+<h2>Upcoming Events</h2>
+[events_tracker_upcoming per_page="5"]
+
+<h2>My Saved Events</h2>
+[events_tracker_saved]
+```
 
 ## Single Event Pages
 
