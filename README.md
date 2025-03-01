@@ -16,14 +16,17 @@ Events Tracker is an add-on for The Events Calendar plugin, designed for WordPre
 - Fully responsive design with customizable template structure
 - Displays event details including date, time, venue, and cost
 - Works across multisite networks without requiring The Events Calendar on the current site
-- Individual event pages with clean, developer-friendly markup
+- Block editor integration for single event display
+- Featured image support with customizable image sizes
+- Customizable button text for "Add to My List" and "Remove" actions
+- Clean, semantic HTML with developer-friendly markup
 
 ## Shortcodes
 
 ### Upcoming Events
 
 ```
-[events_tracker_upcoming per_page="10" category="featured" start_date="2025-03-01" end_date="2025-12-31"]
+[events_tracker_upcoming per_page="10" category="featured" start_date="2025-03-01" end_date="2025-12-31" add_text="Add to Trip" remove_text="Remove from Trip" view_details_text="See Details"]
 ```
 
 Displays a paginated list of upcoming events with "Add to My List" buttons. Only logged-in users can see the save functionality, but anyone can view the event listings.
@@ -34,17 +37,22 @@ Parameters:
 - `start_date`: Start date for events to display in YYYY-MM-DD format (default: current date)
 - `end_date`: End date for events to display in YYYY-MM-DD format (default: no end date limit)
 - `tag`: Filter events by tag slug (default: show all tags)
+- `add_text`: Custom text for the "Add to My List" button (default: "Add to My List")
+- `remove_text`: Custom text for the "Remove from My List" button (default: "Remove from My List")
+- `view_details_text`: Custom text for the "View Details" link (default: "View Details")
 
 ### Saved Events
 
 ```
-[events_tracker_saved per_page="10"]
+[events_tracker_saved per_page="10" remove_text="Remove from Trip" view_details_text="See Details"]
 ```
 
 Displays a list of events that the current user has saved to their personal list. Only logged-in users can see this content.
 
 Parameters:
 - `per_page`: Number of events to display per page (default: 10)
+- `remove_text`: Custom text for the "Remove from My List" button (default: "Remove from My List")
+- `view_details_text`: Custom text for the "View Details" link (default: "View Details")
 
 ### Combined Usage
 
@@ -58,21 +66,61 @@ You can combine shortcodes on a single page to create a complete event managemen
 [events_tracker_saved]
 ```
 
-## Single Event Pages
+## Single Event Display
 
-The plugin creates a custom rewrite rule for single event pages, allowing visitors to view detailed information about a specific event. These pages are accessed at:
+The plugin provides a flexible shortcode for displaying single events in block theme templates:
 
 ```
-/tracked-event/{event_id}/
+[events_tracker_single_event]
 ```
 
-Single event pages include:
-- Event title and details
-- Date and time information
-- Venue and location details
-- Event cost (if available)
-- "Add to My List" functionality for logged-in users
-- Full event content rendered from blocks
+This shortcode is the recommended way to display individual events on your site. You simply add this shortcode to a page created with the block editor, then set that page as your "Single Event Page Template" in the plugin settings. When users click on an event title from the listings, they'll be directed to this page with the event details automatically loaded.
+
+### How to Set Up Single Event Display
+
+1. Create a new page using the block editor (e.g., "Event Details")
+2. Add any header, content blocks, or custom layout elements you want
+3. Insert the `[events_tracker_single_event]` shortcode where you want the event content to appear
+4. Go to Events Tracker Settings → Select this page as your "Single Event Page Template"
+5. Events will now link to this page with the event_id passed as a URL parameter
+
+### Shortcode Parameters
+
+The shortcode offers many customization options:
+
+- `event_id`: The ID of the event to display (default: detected from URL parameter)
+- `show_title`: Whether to display the event title (yes/no, default: yes)
+- `show_meta`: Whether to display event meta info (date, time, venue) (yes/no, default: yes)
+- `show_cost`: Whether to display the event cost (yes/no, default: yes)
+- `show_content`: Whether to display the event content (yes/no, default: yes)
+- `show_actions`: Whether to display the save/remove buttons (yes/no, default: yes)
+- `show_navigation`: Whether to show navigation links to event listings (yes/no, default: no)
+- `show_image`: Whether to display the featured image (yes/no, default: yes)
+- `image_size`: Size of the featured image (thumbnail, medium, large, full, default: large)
+- `add_text`: Custom text for the "Add to My List" button (default: "Add to My List")
+- `remove_text`: Custom text for the "Remove from My List" button (default: "Remove from My List")
+
+### Examples
+
+**Basic usage in a block theme template:**
+```
+[events_tracker_single_event]
+```
+
+**Custom display with specific components:**
+```
+[events_tracker_single_event show_image="yes" image_size="medium" add_text="Add to Trip" show_navigation="no"]
+```
+
+**Display a specific event regardless of URL parameter:**
+```
+[events_tracker_single_event event_id="123"]
+```
+
+**Simplified display for embedding in other content:**
+```
+[events_tracker_single_event show_title="no" show_actions="no" show_navigation="no"]
+```
 
 ## Installation
 
@@ -90,7 +138,8 @@ Single event pages include:
 4. Set the "Events Per Page" to control pagination
 5. Choose whether to display past events in the saved events list
 6. Select a page to use for the events list display
-7. Save your settings
+7. **Important:** Select a page with the `[events_tracker_single_event]` shortcode as your "Single Event Page Template"
+8. Save your settings
 
 ## Requirements
 
@@ -125,6 +174,9 @@ This plugin supports several multisite usage patterns:
 - The plugin includes security measures like nonce verification and capability checks
 - Template files use semantic class names for easy CSS customization
 - Single event pages display content using WordPress block rendering functions
+- Featured images are properly handled across sites in a multisite network
+- Shortcode attributes allow for complete customization of event display
+- Button text can be customized to match specific use cases (e.g., "Add to Trip")
 
 ## The Events Calendar Integration
 
@@ -146,11 +198,14 @@ This plugin is licensed under the GPL v2 or later.
 
 ## Customization
 
-The plugin templates are designed to be easily customizable:
+The plugin is designed to be easily customizable:
 
 1. **CSS Styling**: All templates use semantic class names that can be targeted with your theme's CSS
 2. **Template Override**: Copy template files from the plugin's `public/partials` directory to your theme's `events-tracker` directory to override them
 3. **Filter Hooks**: Use WordPress filter hooks to modify data before it's displayed
+4. **Shortcode Attributes**: Use the many shortcode attributes to customize event display without touching code
+5. **Block Editor Integration**: Create custom page layouts with the WordPress block editor and insert event content where you want it
+6. **Custom Button Text**: Personalize the button text to match your specific use case (e.g., "Add to Trip" instead of "Add to My List")
 
 ## Created By
 
