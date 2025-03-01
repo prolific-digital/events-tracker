@@ -100,81 +100,44 @@ class Events_Tracker {
         $this->loader->add_action('wp_ajax_events_tracker_save_event', $ajax, 'save_event');
         $this->loader->add_action('wp_ajax_events_tracker_remove_event', $ajax, 'remove_event');
         
-        // Custom rewrite rules for single event pages
-        $this->loader->add_action('init', $this, 'add_rewrite_rules');
-        $this->loader->add_filter('query_vars', $this, 'add_query_vars');
-        $this->loader->add_action('template_include', $this, 'handle_single_event_template');
-        
         // Change the event URL to our custom URL
         $this->loader->add_filter('events_tracker_event_url', $this, 'modify_event_url', 10, 3);
     }
     
     /**
-     * Add rewrite rules for single event pages
-     *
+     * Add rewrite rules for single event pages - REMOVED
+     * The plugin now uses shortcodes on regular pages instead of custom URL patterns
+     * 
      * @since    1.0.0
+     * @deprecated Since 1.1.0
      */
     public function add_rewrite_rules() {
-        // Define the rewrite rule
-        $rule = $this->event_slug . '/([0-9]+)/([^/]+)/?$';
-        $redirect = 'index.php?tracked_event_id=$matches[1]&tracked_event_slug=$matches[2]';
-        
-        // Debug for admins
-        if (current_user_can('manage_options')) {
-            error_log('Events Tracker - Adding rewrite rule: ' . $rule . ' -> ' . $redirect);
-        }
-        
-        add_rewrite_rule($rule, $redirect, 'top');
-        
-        // Flush rewrite rules only on plugin activation or if forced
-        if (get_option('events_tracker_flush_rewrite_rules', false)) {
-            error_log('Events Tracker - Flushing rewrite rules');
-            flush_rewrite_rules();
-            delete_option('events_tracker_flush_rewrite_rules');
-        }
-        
-        // Force flush rewrite rules on every page load during development (REMOVE IN PRODUCTION)
-        flush_rewrite_rules();
+        // Legacy functionality removed
     }
     
     /**
-     * Add query vars for single event pages
+     * Add query vars for single event pages - REMOVED
+     * The plugin now uses shortcodes on regular pages instead of custom URL patterns
      *
      * @since    1.0.0
+     * @deprecated Since 1.1.0
      * @param    array    $query_vars    The array of query vars.
      * @return   array    The modified array of query vars.
      */
     public function add_query_vars($query_vars) {
-        $query_vars[] = 'tracked_event_id';
-        $query_vars[] = 'tracked_event_slug';
-        $query_vars[] = 'source_blog_id';
         return $query_vars;
     }
     
     /**
-     * Handle template for single event pages
+     * Handle template for single event pages - REMOVED
+     * The plugin now uses shortcodes on regular pages instead of custom URL patterns
      *
      * @since    1.0.0
+     * @deprecated Since 1.1.0
      * @param    string    $template    The template to include.
      * @return   string    The modified template path.
      */
     public function handle_single_event_template($template) {
-        // Check if we're on a single event page
-        $event_id = get_query_var('tracked_event_id');
-        
-        // Debug for admins
-        if (current_user_can('manage_options')) {
-            error_log('Events Tracker - Template requested for URI: ' . $_SERVER['REQUEST_URI']);
-            error_log('Events Tracker - tracked_event_id: ' . $event_id);
-            error_log('Events Tracker - tracked_event_slug: ' . get_query_var('tracked_event_slug'));
-            error_log('Events Tracker - Template before: ' . $template);
-        }
-        
-        if ($event_id) {
-            // This is a single event page, use our custom template
-            return EVENTS_TRACKER_PLUGIN_DIR . 'public/partials/single-event-template.php';
-        }
-        
         return $template;
     }
     
@@ -188,10 +151,23 @@ class Events_Tracker {
      * @return   string    The modified event URL.
      */
     public function modify_event_url($url, $event, $blog_id) {
-        if (!empty($event) && !empty($event->ID) && !empty($event->post_name)) {
-            return home_url($this->event_slug . '/' . $event->ID . '/' . $event->post_name . '/');
+        if (!empty($event) && !empty($event->ID)) {
+            // Get the custom single event page from settings
+            $single_event_page_id = get_option('events_tracker_single_event_page', 0);
+            
+            if ($single_event_page_id > 0) {
+                // Always use the block theme page with query parameter
+                return add_query_arg('event_id', $event->ID, get_permalink($single_event_page_id));
+            } else {
+                // If no page is set, return to the events page to encourage admin to set up a page
+                $events_page_id = get_option('events_tracker_events_page', 0);
+                if ($events_page_id > 0) {
+                    return add_query_arg('event_id', $event->ID, get_permalink($events_page_id));
+                }
+            }
         }
         
+        // Default fallback
         return $url;
     }
 
@@ -206,6 +182,7 @@ class Events_Tracker {
         // Register shortcodes
         add_shortcode('events_tracker_upcoming', array($shortcodes, 'upcoming_events_shortcode'));
         add_shortcode('events_tracker_saved', array($shortcodes, 'saved_events_shortcode'));
+        add_shortcode('events_tracker_single_event', array($shortcodes, 'single_event_shortcode'));
         add_shortcode('events_tracker_debug', array($this, 'debug_shortcode'));
     }
     
@@ -296,10 +273,6 @@ class Events_Tracker {
                     $details = Events_Tracker_Event::get_event_details($blog_id, $event);
                     $output .= '<h5>Event Details:</h5>';
                     $output .= '<pre>' . esc_html(print_r($details, true)) . '</pre>';
-                    
-                    // Show single event URL
-                    $url = home_url($this->event_slug . '/' . $event->ID . '/' . $event->post_name . '/');
-                    $output .= '<p>Single Event URL: <a href="' . esc_url($url) . '" target="_blank">' . esc_html($url) . '</a></p>';
                 } else {
                     $output .= '<p style="color:red;">Event not found!</p>';
                 }

@@ -149,17 +149,12 @@ class Events_Tracker_Admin {
                 // Get event details
                 $details = Events_Tracker_Event::get_event_details($blog_id, $event);
                 
-                // Show event URL
-                $tracker = new Events_Tracker();
-                $url = home_url($tracker->event_slug . '/' . $event->ID . '/' . $event->post_name . '/');
-                
                 $debug_result .= '<h3>' . __('Event Details', 'events-tracker') . '</h3>';
                 $debug_result .= '<p><strong>' . __('Title:', 'events-tracker') . '</strong> ' . esc_html($event->post_title) . '</p>';
                 $debug_result .= '<p><strong>' . __('Start Date:', 'events-tracker') . '</strong> ' . esc_html($details['start_date']) . '</p>';
                 $debug_result .= '<p><strong>' . __('End Date:', 'events-tracker') . '</strong> ' . esc_html($details['end_date']) . '</p>';
                 $debug_result .= '<p><strong>' . __('Venue:', 'events-tracker') . '</strong> ' . esc_html($details['venue']) . '</p>';
                 $debug_result .= '<p><strong>' . __('Original URL:', 'events-tracker') . '</strong> <a href="' . esc_url($details['url']) . '" target="_blank">' . esc_html($details['url']) . '</a></p>';
-                $debug_result .= '<p><strong>' . __('Local URL:', 'events-tracker') . '</strong> <a href="' . esc_url($url) . '" target="_blank">' . esc_html($url) . '</a></p>';
                 
                 // Show post content excerpt
                 $content_excerpt = wp_trim_words($event->post_content, 30, '...');

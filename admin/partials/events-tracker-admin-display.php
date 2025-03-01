@@ -15,34 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 $multisite = new Events_Tracker_Multisite();
 $blog_id = $multisite->get_source_blog_id();
 
-// Get some stats
-$users_with_saved_events = 0;
-$total_saved_events = 0;
-
-// Get all users with saved events
-$users_with_meta = get_users(array(
-    'meta_key' => 'events_tracker_saved_events',
-    'count_total' => true,
-));
-
-$users_with_saved_events = $users_with_meta;
-
-// Calculate total saved events
-if ($users_with_saved_events > 0) {
-    $user_query = new WP_User_Query(array(
-        'meta_key' => 'events_tracker_saved_events',
-        'fields' => 'ID',
-    ));
-    
-    $user_ids = $user_query->get_results();
-    
-    foreach ($user_ids as $user_id) {
-        $saved_events = get_user_meta($user_id, 'events_tracker_saved_events', true);
-        if (is_array($saved_events)) {
-            $total_saved_events += count($saved_events);
-        }
-    }
-}
+// We no longer need usage statistics
 ?>
 
 <div class="wrap">
@@ -71,30 +44,21 @@ if ($users_with_saved_events > 0) {
             </div>
         </div>
         
-        <div class="events-tracker-card">
-            <h2><?php _e( 'Usage Statistics', 'events-tracker' ); ?></h2>
-            <div class="events-tracker-content">
-                <p>
-                    <strong><?php _e( 'Users with Saved Events:', 'events-tracker' ); ?></strong> 
-                    <?php echo esc_html($users_with_saved_events); ?>
-                </p>
-                <p>
-                    <strong><?php _e( 'Total Saved Events:', 'events-tracker' ); ?></strong> 
-                    <?php echo esc_html($total_saved_events); ?>
-                </p>
-            </div>
-        </div>
         
         <div class="events-tracker-card">
             <h2><?php _e( 'Shortcodes', 'events-tracker' ); ?></h2>
             <div class="events-tracker-content">
                 <p>
                     <code>[events_tracker_upcoming]</code> - 
-                    <?php _e('Displays a list of upcoming events with pagination.', 'events-tracker'); ?>
+                    <?php _e('Displays a paginated list of upcoming events with buttons to save events to a personal list.', 'events-tracker'); ?>
                 </p>
                 <p>
                     <code>[events_tracker_saved]</code> - 
-                    <?php _e('Displays a list of events saved by the current user.', 'events-tracker'); ?>
+                    <?php _e('Shows a list of events that the current user has saved to their personal list.', 'events-tracker'); ?>
+                </p>
+                <p>
+                    <code>[events_tracker_single_event]</code> - 
+                    <?php _e('Displays a single event with details, featured image, and action buttons in a block theme template.', 'events-tracker'); ?>
                 </p>
                 <p>
                     <a href="<?php echo esc_url(admin_url('admin.php?page=events-tracker-shortcodes')); ?>" class="button">

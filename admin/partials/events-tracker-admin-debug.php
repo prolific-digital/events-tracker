@@ -42,13 +42,7 @@ if (is_multisite()) {
     restore_current_blog();
 }
 
-// Get rewrite rules
-global $wp_rewrite;
-$rules = $wp_rewrite->wp_rewrite_rules();
-$tracker = new Events_Tracker();
-$plugin_rules = array_filter($rules, function($key) use ($tracker) {
-    return strpos($key, $tracker->event_slug) === 0;
-}, ARRAY_FILTER_USE_KEY);
+// No longer need rewrite rules
 ?>
 
 <div class="wrap">
@@ -111,40 +105,15 @@ $plugin_rules = array_filter($rules, function($key) use ($tracker) {
         </div>
         
         <div class="postbox">
-            <h2 class="hndle"><?php _e('Rewrite Rules', 'events-tracker'); ?></h2>
+            <h2 class="hndle"><?php _e('Flush Rewrite Rules', 'events-tracker'); ?></h2>
             <div class="inside">
-                <h3><?php _e('Current Plugin Rewrite Rules', 'events-tracker'); ?></h3>
-                
-                <?php if (!empty($plugin_rules)) : ?>
-                <table class="widefat">
-                    <thead>
-                        <tr>
-                            <th><?php _e('Pattern', 'events-tracker'); ?></th>
-                            <th><?php _e('Rewrite', 'events-tracker'); ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($plugin_rules as $pattern => $rewrite) : ?>
-                        <tr>
-                            <td><?php echo esc_html($pattern); ?></td>
-                            <td><?php echo esc_html($rewrite); ?></td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <?php else : ?>
-                <p><?php _e('No plugin rewrite rules found. Try flushing the rewrite rules.', 'events-tracker'); ?></p>
-                <?php endif; ?>
-                
+                <p><?php _e('If you experience issues with event URLs, you can flush the rewrite rules.', 'events-tracker'); ?></p>
                 <form method="post" action="">
                     <input type="hidden" name="action" value="flush_rules">
                     <p class="submit">
                         <input type="submit" name="submit" id="flush-rules" class="button button-secondary" value="<?php _e('Flush Rewrite Rules', 'events-tracker'); ?>">
                     </p>
                 </form>
-                
-                <h3><?php _e('Registered Query Vars', 'events-tracker'); ?></h3>
-                <p><?php echo esc_html(implode(', ', $wp_rewrite->public_query_vars)); ?></p>
             </div>
         </div>
     </div>

@@ -40,16 +40,18 @@ if ( ! defined( 'WPINC' ) ) {
         </div>
         
         <div class="events-tracker-card">
-            <h4><?php _e('Shortcode Usage', 'events-tracker'); ?></h4>
+            <h4><?php _e('Shortcode Overview', 'events-tracker'); ?></h4>
             <p>
-                <?php _e('Use the shortcode [events_tracker_upcoming] on any page to display the list of upcoming events.', 'events-tracker'); ?>
+                <?php _e('Events Tracker provides the following shortcodes:', 'events-tracker'); ?>
             </p>
-            <p>
-                <?php _e('Use the shortcode [events_tracker_saved] to show a user\'s saved events.', 'events-tracker'); ?>
-            </p>
+            <ul>
+                <li><strong>[events_tracker_upcoming]</strong> - <?php _e('Displays a paginated list of upcoming events with add/remove buttons', 'events-tracker'); ?></li>
+                <li><strong>[events_tracker_saved]</strong> - <?php _e('Shows events the current user has saved to their personal list', 'events-tracker'); ?></li>
+                <li><strong>[events_tracker_single_event]</strong> - <?php _e('Displays a single event in a block theme template with customizable components', 'events-tracker'); ?></li>
+            </ul>
             <p>
                 <a href="<?php echo esc_url(admin_url('admin.php?page=events-tracker-shortcodes')); ?>">
-                    <?php _e('Learn more about available shortcodes', 'events-tracker'); ?>
+                    <?php _e('View detailed shortcode documentation', 'events-tracker'); ?>
                 </a>
             </p>
         </div>
