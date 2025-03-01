@@ -57,6 +57,17 @@ class Events_Tracker_Settings {
                 'default' => 0,
             )
         );
+        
+        register_setting(
+            'events_tracker_settings',
+            'events_tracker_single_event_page',
+            array(
+                'type' => 'integer',
+                'description' => 'The page ID for single event display in block template',
+                'sanitize_callback' => 'absint',
+                'default' => 0,
+            )
+        );
 
         // Add general settings section
         add_settings_section(
@@ -95,6 +106,14 @@ class Events_Tracker_Settings {
             'events_tracker_events_page',
             __('Events Page', 'events-tracker'),
             array($this, 'events_page_callback'),
+            'events-tracker-settings',
+            'events_tracker_settings_section'
+        );
+        
+        add_settings_field(
+            'events_tracker_single_event_page',
+            __('Single Event Page Template', 'events-tracker'),
+            array($this, 'single_event_page_callback'),
             'events-tracker-settings',
             'events_tracker_settings_section'
         );
@@ -228,6 +247,35 @@ class Events_Tracker_Settings {
         if ($page_id > 0) {
             $page_url = get_permalink($page_id);
             echo '<p><a href="' . esc_url($page_url) . '" target="_blank">' . __('View Events Page', 'events-tracker') . '</a></p>';
+        }
+    }
+    
+    /**
+     * Single event page field callback
+     *
+     * @since    1.1.0
+     */
+    public function single_event_page_callback() {
+        $page_id = get_option('events_tracker_single_event_page', 0);
+        
+        // Get all pages
+        $pages = get_pages();
+        
+        echo '<select name="events_tracker_single_event_page" class="regular-text">';
+        echo '<option value="0">' . __('-- Select a Page --', 'events-tracker') . '</option>';
+        
+        foreach ($pages as $page) {
+            echo '<option value="' . esc_attr($page->ID) . '" ' . selected($page_id, $page->ID, false) . '>' . esc_html($page->post_title) . '</option>';
+        }
+        
+        echo '</select>';
+        
+        echo '<p class="description">' . __('Select the page with the [events_tracker_single_event] shortcode. This page will be used when users click on event titles.', 'events-tracker') . '</p>';
+        echo '<p class="description" style="color: #d63638; font-weight: bold;">' . __('REQUIRED: This page must contain the [events_tracker_single_event] shortcode for events to be displayed. Event links will not work correctly until you set this page.', 'events-tracker') . '</p>';
+        
+        if ($page_id > 0) {
+            $page_url = get_permalink($page_id);
+            echo '<p><a href="' . esc_url($page_url) . '?event_id=123" target="_blank">' . __('View Example (ID: 123)', 'events-tracker') . '</a></p>';
         }
     }
     

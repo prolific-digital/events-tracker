@@ -154,7 +154,7 @@ $selected_end_date = isset($_GET['end_date']) ? sanitize_text_field($_GET['end_d
             <div class="events-tracker-event-card" data-event-id="<?php echo esc_attr($event->ID); ?>">
                 <div class="events-tracker-event-card-header">
                     <h3 class="events-tracker-event-card-title">
-                        <a href="<?php echo esc_url($event_details['url']); ?>" target="_blank">
+                        <a href="<?php echo esc_url($event_details['url']); ?>">
                             <?php echo esc_html($event->post_title); ?>
                         </a>
                         <?php if (!empty($event_details['cost'])) : ?>
@@ -190,15 +190,20 @@ $selected_end_date = isset($_GET['end_date']) ? sanitize_text_field($_GET['end_d
                 </div>
                 
                 <div class="events-tracker-event-card-footer">
-                    <?php if ($is_saved) : ?>
-                        <button class="events-tracker-remove-event" data-event-id="<?php echo esc_attr($event->ID); ?>">
-                            <?php _e('Remove from My List', 'events-tracker'); ?>
-                        </button>
-                    <?php else : ?>
-                        <button class="events-tracker-save-event" data-event-id="<?php echo esc_attr($event->ID); ?>">
-                            <?php _e('Add to My List', 'events-tracker'); ?>
-                        </button>
-                    <?php endif; ?>
+                    <div class="events-tracker-event-actions">
+                        <?php if ($is_saved) : ?>
+                            <button class="events-tracker-remove-event" data-event-id="<?php echo esc_attr($event->ID); ?>">
+                                <?php echo esc_html($atts['remove_text']); ?>
+                            </button>
+                        <?php else : ?>
+                            <button class="events-tracker-save-event" data-event-id="<?php echo esc_attr($event->ID); ?>">
+                                <?php echo esc_html($atts['add_text']); ?>
+                            </button>
+                        <?php endif; ?>
+                        <a href="<?php echo esc_url($event_details['url']); ?>" class="events-tracker-view-details">
+                            <?php echo esc_html($atts['view_details_text']); ?>
+                        </a>
+                    </div>
                     <span class="events-tracker-event-status"></span>
                 </div>
             </div>

@@ -90,6 +90,9 @@ class Events_Tracker_Event {
                     case '_EventCost':
                         $result['details']['cost'] = $meta->meta_value;
                         break;
+                    case '_thumbnail_id':
+                        $result['details']['thumbnail_id'] = $meta->meta_value;
+                        break;
                 }
             }
             
@@ -467,7 +470,6 @@ class Events_Tracker_Event {
             } catch (Exception $e) {
                 $error_message = $e->getMessage();
                 $debug['error'] = $error_message;
-                error_log('Events Tracker - Error retrieving event: ' . $error_message);
                 $event = null;
             }
         }
@@ -497,6 +499,7 @@ class Events_Tracker_Event {
             'city' => '',
             'state' => '',
             'zip' => '',
+            'thumbnail_id' => 0,
             'country' => '',
             'cost' => '',
             'url' => '',
@@ -556,6 +559,10 @@ class Events_Tracker_Event {
                 // Get cost
                 $cost = get_post_meta($event->ID, '_EventCost', true);
                 $details['cost'] = !empty($cost) ? $cost : '';
+                
+                // Get featured image ID
+                $thumbnail_id = get_post_thumbnail_id($event->ID);
+                $details['thumbnail_id'] = !empty($thumbnail_id) ? $thumbnail_id : 0;
 
                 // Get event URL
                 $original_url = get_permalink($event->ID);
@@ -942,6 +949,9 @@ class Events_Tracker_Event {
                     case '_EventCost':
                         $result['details']['cost'] = $meta->meta_value;
                         break;
+                    case '_thumbnail_id':
+                        $result['details']['thumbnail_id'] = $meta->meta_value;
+                        break;
                 }
             }
             
@@ -1134,7 +1144,7 @@ class Events_Tracker_Event {
                 $event = new WP_Post($post_data);
             }
         } catch (Exception $e) {
-            error_log('Events Tracker - Forced retrieval error: ' . $e->getMessage());
+            // Silent failure - debug info captured in return value
         }
 
         return $event;
@@ -1196,7 +1206,6 @@ class Events_Tracker_Event {
                 $categories = $wpdb->get_results($query);
             } catch (Exception $e) {
                 $error_message = $e->getMessage();
-                error_log('Events Tracker - Error getting event categories: ' . $error_message);
                 $categories = array();
             }
         }
